@@ -5,16 +5,35 @@
     <title>Current Weather</title>
 </head>
 <body>
+<main>
+    <div class="d-flex justify-content-center align-items-center container">
+        <form class="text-center border border-light" th:action="@{/}" method="post"
+              th:object="${location}" enctype="multipart/form-data">
+            <h2 class="tm-block-title d-inline-block">Choose destination</h2>
+            <hr/>
+            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'text-danger'">
+                <label for="add-name" class="font-weight-bold">City</label>
+                <input type="text" class="form-control" id="add-name" name="name" th:field="*{name}">
+                <th:block th:if="${#fields.hasErrors('name')}">
+                    <small class="text-danger" th:errors="*{name}"></small>
+                </th:block>
+            </div>
 
-<div>
-    <h3>Current Conditions</h3>
-    <p th:text="${currentWeather.description}">Description</p>
-    <h3>Temperature</h3>
-    <p th:text="${currentWeather.temperature} + ' &#8457;'">Temperature</p>
-    <h3>Feels Like</h3>
-    <p th:text="${currentWeather.feelsLike} + ' &#8457;'">Feels Like</p>
-    <h3>Wind Speed</h3>
-    <p th:text="${currentWeather.windSpeed} + ' mph'"></p>
-</div>
+            <div class="custom-select" style="width:200px;">
+                <label for="add-country" class="font-weight-bold">Country</label>
+                <select id="add-country" name="country">
+                    <option value="">Choose country</option>
+                    <option th:each="o : ${countries}"
+                            th:text="${o.getCountry()}" th:value="${o.getCountry()}">Food
+                    </option>
+                </select>
+                <th:block th:if="${#fields.hasErrors('country')}">
+                    <small class="text-danger" th:errors="*{country}"></small>
+                </th:block>
+            </div>
+            <button class="btn btn-dark my-4 btn-block" type="submit">Current weather</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>
